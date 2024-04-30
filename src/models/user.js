@@ -21,12 +21,12 @@ const userSchema = new mongoose.Schema({
         min: 5,
         max: 100
     }
-})
+}, {timestamps: true})
 
 function userValidation(user) {
     const schema = joi.object({
         name: joi.string().min(5).max(100).required(),
-        email: joi.string().min(5).max(255).required().unique().email(),
+        email: joi.string().min(5).max(255).required().email(),
         password: joi.string().min(5).max(100).required(),
     })
 }
