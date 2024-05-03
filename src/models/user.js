@@ -30,7 +30,14 @@ function userValidation(user) {
         password: joi.string().min(5).max(100).required(),
     })
 }
+function loginValidation(user) {
+    const schema = joi.object({
+        email: joi.string().min(5).max(100).required().email(),
+        password: joi.string().min(5).max(255).required()
+    })
+}
 
 
 module.exports.User = mongoose.model('User', userSchema)
 module.exports.validate = userValidation;
+module.exports.loginValidation = loginValidation

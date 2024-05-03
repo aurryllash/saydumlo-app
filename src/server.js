@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 const registrationRoutes = require('./routes/register');
+const loginRoutes = require('./routes/login');
 
 const port = process.env.PORT
 const DATABASE_URL = process.env.DATABASE_URL
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.use('/api', registrationRoutes)
+app.use('/api', loginRoutes)
 
 app.get('/', (req, res) => {
     res.render('home')
