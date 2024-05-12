@@ -34,15 +34,15 @@ const authorizationToken = (req, res, next) => {
     const cookiesToken = req.cookies.token;
     console.log(cookiesToken)
     if(!cookiesToken) {
-        return res.sendStatus(403)
+        return res.status(403).redirect('/404')
     }
     jwt.verify(cookiesToken, SECRET, (err, decoded) => {
         if(err) {
             return res.sendStatus(403)
         }
-        console.log(req.user)
+
         req.user = decoded
-        console.log(req.user)
+        console.log(decoded)
         next();
     })
 }
@@ -50,4 +50,12 @@ const authorizationToken = (req, res, next) => {
 app.get('/', authorizationToken, (req, res) => {
     res.render('home')
 })
+app.get('/log-out', (req, res) => {
+    res.clearCookie('token')
+
+    res.redirect('/api/log-in')
+})
+app.get('/404', (req, res) => {
+    res.render('404')
+}) 
 
