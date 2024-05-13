@@ -22,7 +22,7 @@ router.post('/log-in', async (req, res) => {
             if(!correctPassword) {
                 return res.status(400).json('Incorrect password.')
             }
-            const token = jwt.sign({ id: user._id }, SECRET)
+            const token = jwt.sign({ id: user._id, role: user.role }, SECRET)
             res.cookie(
                 "token", token, {
                 httpOnly: true,

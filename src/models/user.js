@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 5,
         max: 100
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ['user', 'admin'],
+        default: 'user'
     }
 }, {timestamps: true})
 
@@ -28,6 +34,7 @@ function userValidation(user) {
         name: joi.string().min(5).max(100).required(),
         email: joi.string().min(5).max(255).required().email(),
         password: joi.string().min(5).max(100).required(),
+        role: joi.string().valid('user', 'admin')
     })
     return schema.validate(user)
 }
