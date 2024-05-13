@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const express = require('express')
 const router = express.Router()
 
-// router.use(express.json())
 
 router.post('/registration', async (req, res) => {
     const error = validate(req.body);
@@ -35,8 +34,6 @@ router.post('/registration', async (req, res) => {
 router.get('/registration', (req, res) => {
     res.render('registration')
 })
-router.get('/log-in', (req, res) => {
-    res.render('log-in')
-})
+
 
 module.exports = router

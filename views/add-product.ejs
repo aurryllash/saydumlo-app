@@ -1,0 +1,40 @@
+<%- include('./partials/header')%>
+<style>
+    h1{
+
+    font-size: 30px;
+    font-weight: 900;
+    margin-top: 40px;
+    margin-left: 20px;
+}
+</style>
+<section style="padding: 0 0 150px 0;">
+    
+    <div class="container">
+        <h1>ADD PRODUCT</h1>
+        <form style="width: 400px;" action="/addProduct" enctype="multipart/form-data" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" id="title">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" name="description" id="description">
+            </div>
+            <div class="mb-3">
+                <label for="Price" class="form-label">Price</label>
+                <input type="text" class="form-control" name="price" id="Price">
+            </div>
+            <div class="mb-3">
+                <label for="Image" class="form-label">Image</label>
+                <input type="file" class="form-control" name="image" id="Image">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-light" style="background-color: rgb(189, 189, 189); color: whitesmoke; margin-left: 20px;">Cancel</a>
+        </form>
+    </div>
+</section>
+
+  
+</body>
+</html>  

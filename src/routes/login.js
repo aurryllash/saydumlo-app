@@ -28,13 +28,19 @@ router.post('/log-in', async (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== 'development',
                 sameSite: "strict",
-                maxAge: jwtExpireSeconds * 1000
+                maxAge: jwtExpireSeconds * 6000
             })
             res.json({ message: 'Successfully logged in' })
         } catch(err) {
             res.status(400).json({ message: err.message })
         }
     }
+})
+
+
+
+router.get('/log-in', (req, res) => {
+    res.render('log-in')
 })
 
 module.exports = router
