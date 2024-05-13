@@ -29,12 +29,14 @@ function userValidation(user) {
         email: joi.string().min(5).max(255).required().email(),
         password: joi.string().min(5).max(100).required(),
     })
+    return schema.validate(user)
 }
 function loginValidation(user) {
     const schema = joi.object({
         email: joi.string().min(5).max(100).required().email(),
         password: joi.string().min(5).max(255).required()
     })
+    return schema.validate(user)
 }
 
 

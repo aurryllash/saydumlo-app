@@ -8,8 +8,9 @@ const router = express.Router()
 router.post('/registration', async (req, res) => {
     const error = validate(req.body);
 
-    if(error) {
-        return res.status(400).send(error.details[0].message)
+    if(error.error) {
+        // return res.status(400).send(error.error.details[0].message)
+        return res.status(400).send(error.error)
     }
     let user = await User.findOne({ email: req.body.email })
     if(user) {

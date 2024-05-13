@@ -10,13 +10,13 @@ const jwtExpireSeconds = 300
 router.post('/log-in', async (req, res) => {
     const error = loginValidation(req.body)
 
-    if(error) {
+    if(error.error) {
         return res.status(401).send("incorrect password or email")
     } else {
         try {
             let user = await User.findOne({ email: req.body.email })
             if(!user) {
-                res.status(400).json({ message: 'Incorrect email or password.' })
+                res.status(400).json({ message: 'Incorrect email or password' })
             }
             const correctPassword = await bcrypt.compare(req.body.password, user.password)
             if(!correctPassword) {
