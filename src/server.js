@@ -30,10 +30,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser());
 
+// Routes
 app.use('/api', registrationRoutes)
 app.use('/api', loginRoutes)
 
-app.use('/', addProductRoutes)
+app.use('/upload', addProductRoutes)
 
 
 const authorizationMiddleware = (requiredRole) => (req, res, next) => {

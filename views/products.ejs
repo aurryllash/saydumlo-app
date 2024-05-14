@@ -1,0 +1,107 @@
+<%- include('./partials/header')%>
+<style>
+    .product {
+    margin-top: 50px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+.containers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 40px;
+}
+.addIcon {
+  opacity: 25%;
+  cursor: pointer;
+}
+.addIcon:hover {
+  opacity: 40%;
+}
+strong {
+  font-size: 16px;
+  margin-left: 20px;
+}
+.card {
+    margin: 10px;
+    margin-left: 20px;
+    height: 400px;
+    padding: 20px 10px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.428);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+  }
+  
+  img {
+    width: 30%;
+    height: auto; /* Maintain aspect ratio */
+    transition: ease-in 0.2s;
+    margin-left: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+  }
+  img:hover {
+    width: 32%;
+  }
+  .card-body {
+    display: grid;
+    align-items: center;
+  }
+  .card-title {
+    font-size: 16px;
+  }
+  .price {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .warning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .inactive-item {
+    border: 2px solid red;
+    background-color: rgba(229, 51, 51, 0.285)
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  
+</style>
+<div class="product">
+
+    <ul>
+        
+      <li>
+        <ng-container >
+          <div class="card" style="width: 18rem;" >
+            <img class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title">title:</h5>
+              <p class="price">Price: </p>
+            </div>
+            <div class="buttons">
+                <button p-button type="button" class="btn btn-light">Edit</button>
+                <button type="button" class="btn btn-dark">DELETE</button>
+                <button type="button" class="btn btn-dark">RETURN</button>
+            </div>
+          </div>
+        </ng-container>
+    </li>
+  </ul>
