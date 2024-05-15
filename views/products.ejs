@@ -89,11 +89,12 @@ strong {
           <div class="card" style="width: 18rem;" >
             <img src="<%= item.data %>" class="card-img-top" alt="Product Image">
             <div class="card-body">
-              <h5 class="card-title">title:</h5>
-              <p class="price">Price: </p>
+              <h5 class="card-title">title: <%= item.metadata.title %></h5>
+              <h5 class="card-title">description: <%= item.metadata.description %></h5>
+              <p class="price">Price: <%= item.metadata.price %></p>
             </div>
             <div class="buttons">
-                <button p-button type="button" class="btn btn-light">Edit</button>
+                <!-- <button p-button type="button" class="btn btn-light">Edit</button> -->
                 <button type="button" class="btn btn-dark">DELETE</button>
                 <button type="button" class="btn btn-dark">RETURN</button>
             </div>

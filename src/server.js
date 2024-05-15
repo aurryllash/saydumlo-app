@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use('/api', registrationRoutes)
 app.use('/api', loginRoutes)
 
-app.use('/upload', addProductRoutes)
+app.use('/products', addProductRoutes)
 
 
 const authorizationMiddleware = (requiredRole) => (req, res, next) => {

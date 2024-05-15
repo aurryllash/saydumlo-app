@@ -20,9 +20,13 @@ const storage = new GridFsStorage({
       return {
         bucketName: "photos",
         filename: `${Date.now()}_${file.originalname}`,
+        metadata: {
+          title: req.body.title,
+          description: req.body.description,
+          price: req.body.price
+        }
       }
     } else {
-
       return `${Date.now()}_${file.originalname}`
     }
   },
@@ -31,7 +35,7 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
-router.post('/products', upload.single('image'), async (req, res) => {
+router.post('/upload', upload.single('image'), async (req, res) => {
   const file = req.file
 
   res.send({
@@ -40,39 +44,11 @@ router.post('/products', upload.single('image'), async (req, res) => {
     name: file.filename,
     contentType: file.contentType
   })
+
 })
 
-router.get('/getImages', async (req, res) => {
-  try {
-    await mongoClient.connect();
 
-    const database = mongoClient.db("saydumlo");
-    const images = database.collection("photos.files");
-    const cursor = images.find();
-    const count = await cursor.count();
-
-
-    if(count === 0) {
-      return res.status(404).send({
-        message: "Error: No Images found"
-      })
-    }
-
-    const allImages = []
-    await cursor.forEach(item => {
-      allImages.push(item)
-    })
-    res.send({ files: allImages })
-  } catch(error) {
-    console.log(error);
-    res.status(500).send({
-      message: "Error Somthing went wrong",
-      error
-    })
-  }
-})
-
-router.get("/download", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     await mongoClient.connect();
 
@@ -86,7 +62,7 @@ router.get("/download", async (req, res) => {
     const files = await images.toArray()
 
     if(files.length === 0) {
-      res.status(403).json({ error: "Images Not Found" })
+      return res.status(403).json({ error: "Images Not Found" })
     }
 
     const imagePromises = files.map(async (file) => {
@@ -97,7 +73,8 @@ router.get("/download", async (req, res) => {
       });
       return {
         filename: file.filename,
-        data: `data:image/jpeg;base64,${fileData.join('')}`
+        data: `data:image/jpeg;base64,${fileData.join('')}`,
+        metadata: file.metadata
       };
     });
 
@@ -115,7 +92,7 @@ router.get("/download", async (req, res) => {
 })
 
 // Get addProduct route
-router.get('/products', (req, res) => {
+router.get('/upload', (req, res) => {
     res.render('add-product')
 })
 
