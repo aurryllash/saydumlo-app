@@ -84,16 +84,25 @@ router.get("/download", async (req, res) => {
     
     const images = database.collection("photos.files").find(); 
     const files = await images.toArray()
-    console.log(files)
 
     if(files.length === 0) {
       res.status(403).json({ error: "Images Not Found" })
     }
 
-    files.forEach(item => {
-      const downloadStream = imageBucket.openDownloadStreamByName(item.filename)
-      downloadStream.pipe(res)
-    })
+    const imagePromises = files.map(async (file) => {
+      const chunks = await database.collection("photos.chunks").find({ files_id: file._id }).sort({ n: 1 }).toArray();
+      let fileData = [];
+      chunks.forEach(chunk => {
+        fileData.push(chunk.data.toString('base64'));
+      });
+      return {
+        filename: file.filename,
+        data: `data:image/jpeg;base64,${fileData.join('')}`
+      };
+    });
+
+    const imagesData = await Promise.all(imagePromises);
+    res.render('products', { Data: imagesData })
 
 
   } catch(error) {
