@@ -61,6 +61,10 @@ app.get('/users', authorizationMiddleware('admin'), async (req, res) => {
     const users = await User.find().sort({ createdAt: -1 });
     res.render('users', { users })
 })
+app.delete('/users/:id', async (req, res) => {
+    console.log(req.params.id)
+    let user = await User.findByIdAndDelete(req.params.id)
+})
 
 // Get addProduct route
 app.get('/products/upload', authorizationMiddleware('admin'), (req, res) => {

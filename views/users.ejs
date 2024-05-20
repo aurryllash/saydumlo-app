@@ -1,4 +1,15 @@
 <%- include('./partials/header')%>
+<style>
+  .delete-button {
+    border: 0;
+    padding: 2px 15px;
+    background-color: rgb(56, 56, 56);
+    transition: all 0.3s;
+  }
+  .delete-button:hover {
+    background-color: black;
+  }
+</style>
 <section class="container">
     <table class="table">
         <thead>
@@ -7,6 +18,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
+            <th scope="col">/</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +28,7 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td><%= user.role %></td>
+            <td><button class="delete-button" data-id="<%= user._id %>">Delete</button></td>
           </tr>
           <% }) %>
         </tbody>
@@ -24,4 +37,22 @@
 
 
 </body>
+<script>
+  const buttons = document.querySelectorAll(".delete-button")
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.id
+      
+      fetch(`/users/${id}`, {
+        method: 'DELETE'
+      })
+      .then(res => {
+        res.json();
+      })
+      .then(res => console.log(res))
+      .catch(error => console.log(error))
+
+    })
+  })
+</script>
 </html>
