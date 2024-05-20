@@ -94,8 +94,7 @@ strong {
               <p class="price">Price: <%= item.metadata.price %></p>
             </div>
             <div class="buttons">
-                <!-- <button p-button type="button" class="btn btn-light">Edit</button> -->
-                <button type="button" class="btn btn-dark">DELETE</button>
+                <button type="button" class="btn btn-dark delete-btn" data-id="<%= item._id %>">DELETE</button>
                 <button type="button" class="btn btn-dark">RETURN</button>
             </div>
           </div>
@@ -103,3 +102,25 @@ strong {
     </li>
     <% }) %>
   </ul>
+
+</body>
+<script>
+
+  const deleteButton = document.querySelectorAll(".delete-btn")
+  deleteButton.forEach(button => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.id
+      console.log(button.dataset.id)
+      fetch(`/products/${id}`, {
+      method: "DELETE"
+    })
+    .then(response => {
+      response.json()
+    })
+    .then(response => {
+    })
+    .catch(err => console.log(err))
+    })
+  })
+</script>
+</html>

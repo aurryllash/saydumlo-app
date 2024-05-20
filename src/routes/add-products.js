@@ -5,6 +5,7 @@ const { Image } = require('../models/image')
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const { GridFSBucket } = require('mongodb');
+const { ObjectId } = require('mongodb');
 const MongoClient = require('mongodb').MongoClient
 
 const url = process.env.DATABASE_URL
@@ -54,9 +55,9 @@ router.get("/", async (req, res) => {
 
     const database = mongoClient.db("saydumlo")
 
-    const imageBucket = new GridFSBucket(database, {
-      bucketName: "photos"
-    })
+    // const imageBucket = new GridFSBucket(database, {
+    //   bucketName: "photos"
+    // })
     
     const images = database.collection("photos.files").find(); 
     const files = await images.toArray()
@@ -72,6 +73,7 @@ router.get("/", async (req, res) => {
         fileData.push(chunk.data.toString('base64'));
       });
       return {
+        _id: file._id,
         filename: file.filename,
         data: `data:image/jpeg;base64,${fileData.join('')}`,
         metadata: file.metadata
@@ -87,6 +89,29 @@ router.get("/", async (req, res) => {
     res.status(500).send({
       message: "Error Something went wrong",
       error,
+    })
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    mongoClient.connect();
+
+    const database = mongoClient.db("saydumlo")
+
+    const objectId = new ObjectId(req.params.id)
+
+    const imageBucket = new GridFSBucket(database, {
+      bucketName: 'photos'
+    })
+    
+    imageBucket.delete(objectId)
+
+  } catch(err) {
+    console.log(err)
+    res.status(500).send({
+      message: "Error Something went wrong",
+      err,
     })
   }
 })
