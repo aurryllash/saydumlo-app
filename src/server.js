@@ -33,7 +33,6 @@ app.use(cookieParser());
 // Routes
 app.use('/api', registrationRoutes)
 app.use('/api', loginRoutes)
-
 app.use('/products', addProductRoutes)
 
 
@@ -63,6 +62,11 @@ app.get('/users', authorizationMiddleware('admin'), async (req, res) => {
     res.render('users', { users })
 })
 
+// Get addProduct route
+app.get('/products/upload', authorizationMiddleware('admin'), (req, res) => {
+    res.render('add-product')
+})
+
 
 
 app.get('/log-out', (req, res) => {
@@ -74,4 +78,6 @@ app.get('/log-out', (req, res) => {
 app.get('/404', (req, res) => {
     res.render('404')
 }) 
+
+module.exports.authorizationMiddleware = authorizationMiddleware;
 

@@ -91,9 +91,6 @@ router.get("/", async (req, res) => {
   }
 })
 
-// Get addProduct route
-router.get('/upload', (req, res) => {
-    res.render('add-product')
-})
+
 
 module.exports = router
