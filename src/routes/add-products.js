@@ -17,7 +17,7 @@ const storage = new GridFsStorage({
   url,
   file: (req, file) => {
 
-    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === 'video/mpeg') {
       return {
         bucketName: "photos",
         filename: `${Date.now()}_${file.originalname}`,
@@ -54,10 +54,6 @@ router.get("/", async (req, res) => {
     await mongoClient.connect();
 
     const database = mongoClient.db("saydumlo")
-
-    // const imageBucket = new GridFSBucket(database, {
-    //   bucketName: "photos"
-    // })
     
     const images = database.collection("photos.files").find(); 
     const files = await images.toArray()
@@ -72,11 +68,13 @@ router.get("/", async (req, res) => {
       chunks.forEach(chunk => {
         fileData.push(chunk.data.toString('base64'));
       });
+
       return {
         _id: file._id,
         filename: file.filename,
         data: `data:image/jpeg;base64,${fileData.join('')}`,
-        metadata: file.metadata
+        metadata: file.metadata,
+        contentType: file.contentType
       };
     });
 
@@ -104,7 +102,7 @@ router.delete('/:id', async (req, res) => {
     const imageBucket = new GridFSBucket(database, {
       bucketName: 'photos'
     })
-    
+
     imageBucket.delete(objectId)
 
   } catch(err) {

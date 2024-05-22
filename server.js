@@ -4,12 +4,13 @@ const app = express();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
+const path = require('path')
 
-const registrationRoutes = require('./routes/register');
-const loginRoutes = require('./routes/login');
-const { User, loginValidation } = require('./models/user')
+const registrationRoutes = require('./src/routes/register');
+const loginRoutes = require('./src/routes/login');
+const { User, loginValidation } = require('./src/models/user')
 
-const addProductRoutes = require('./routes/add-products') 
+const addProductRoutes = require('./src/routes/add-products') 
 
 const port = process.env.PORT
 const DATABASE_URL = process.env.DATABASE_URL
@@ -25,10 +26,13 @@ mongoose.connect(DATABASE_URL)
     })
 
 // EJS
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser());
+app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+app.set('view engine', 'ejs');
+
+
 
 // Routes
 app.use('/api', registrationRoutes)
@@ -59,11 +63,15 @@ app.get('/', authorizationMiddleware(), (req, res) => {
 
 app.get('/users', authorizationMiddleware('admin'), async (req, res) => {
     const users = await User.find().sort({ createdAt: -1 });
+    
     res.render('users', { users })
 })
 app.delete('/users/:id', async (req, res) => {
-    console.log(req.params.id)
     let user = await User.findByIdAndDelete(req.params.id)
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: "User deleted successfully" })
 })
 
 // Get addProduct route
@@ -75,7 +83,6 @@ app.get('/products/upload', authorizationMiddleware('admin'), (req, res) => {
 
 app.get('/log-out', (req, res) => {
     res.clearCookie('token')
-
     res.redirect('/api/log-in')
 })
 
@@ -83,5 +90,4 @@ app.get('/404', (req, res) => {
     res.render('404')
 }) 
 
-module.exports.authorizationMiddleware = authorizationMiddleware;
 

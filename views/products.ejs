@@ -87,7 +87,11 @@ strong {
       <li>
         <ng-container >
           <div class="card" style="width: 18rem;" >
+            <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
             <img src="<%= item.data %>" class="card-img-top" alt="Product Image">
+            <% } else { %>
+              <img src="images/Pause to play.jpg" class="card-img-top" alt="Product Image">
+              <% } %>
             <div class="card-body">
               <h5 class="card-title">title: <%= item.metadata.title %></h5>
               <h5 class="card-title">description: <%= item.metadata.description %></h5>
@@ -101,7 +105,7 @@ strong {
     </li>
     <% }) %>
   </ul>
-
+</div>
 </body>
 <script>
 
@@ -121,5 +125,6 @@ strong {
     .catch(err => console.log(err))
     })
   })
+  
 </script>
 </html>
