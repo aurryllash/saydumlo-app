@@ -25,27 +25,36 @@
         <!-- sidebar body -->
         <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
           <ul class="navbar-nav justify-content-start align-items-center fs-6 flex-grow-1 pe-3">
+            <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
               <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
             </li>
+            <% } %>
+            <% if(!userIsLoggedIn) { %>
             <li class="nav-item mx-2">
               <a class="nav-link active text-white" aria-current="page" href="/api/log-in">log In</a>
             </li>
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709);" href="/api/registration">Registration</a>
             </li>
+            <% } %>
+            <% if(userIsAdmin) { %>
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/users">users</a>
             </li>
+            
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products/upload">Add Product</a>
             </li>
+            <% } %>
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products">Products</a>
             </li>
+            <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/log-out">Log Out</a>
             </li>
+            <% } %>
           </ul>
         </div>
       </div>

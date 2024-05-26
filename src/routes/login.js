@@ -30,17 +30,18 @@ router.post('/log-in', async (req, res) => {
                 sameSite: "strict",
                 maxAge: jwtExpireSeconds * 6000
             })
-            res.json({ message: 'Successfully logged in' })
+            res.redirect('/')
         } catch(err) {
-            res.status(400).json({ message: err.message })
+            return res.status(400).json({ message: err.message })
         }
     }
 })
 
-
-
 router.get('/log-in', (req, res) => {
-    res.render('log-in')
+    if(req.userIsLoggedIn) {
+        res.status(403).redirect('/404')
+    }
+    res.render('log-in', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
 
 module.exports = router

@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const express = require('express')
 const router = express.Router()
 
-
 router.post('/registration', async (req, res) => {
     const error = validate(req.body);
 
@@ -32,8 +31,10 @@ router.post('/registration', async (req, res) => {
 })
 
 router.get('/registration', (req, res) => {
-    res.render('registration')
+    if(req.userIsLoggedIn) {
+        res.status(403).redirect('/404')
+    }
+    res.render('registration', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
-
 
 module.exports = router

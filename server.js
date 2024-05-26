@@ -3,8 +3,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
-const cookieParser = require('cookie-parser');
-const path = require('path')
+const setUserStatus = require('./src/middleware/setUserStatus')
+var cookieParser = require('cookie-parser')
 
 const registrationRoutes = require('./src/routes/register');
 const loginRoutes = require('./src/routes/login');
@@ -31,41 +31,29 @@ app.use(cookieParser());
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs');
-
-
+app.use(setUserStatus)
 
 // Routes
 app.use('/api', registrationRoutes)
 app.use('/api', loginRoutes)
 app.use('/products', addProductRoutes)
 
-
-const authorizationMiddleware = (requiredRole) => (req, res, next) => {
-    const cookiesToken = req.cookies.token;
-    if(!cookiesToken) {
-        return res.status(403).redirect('/404')
+app.get('/', (req, res) => {
+    if(!req.userIsLoggedIn) {
+        return res.redirect('404')
     }
-    jwt.verify(cookiesToken, SECRET, (err, decoded) => {
-        if(err) {
-            return res.status(403).render('404', { message: 'Failed to authenticate token.' })
-        } 
-        if(requiredRole && decoded.role !== requiredRole) {
-            return res.status(403).render('404', { message: 'You do not have permission to access this resource.' });
-        }
-        req.user = decoded
-        next();        
-    })
-}
-
-app.get('/', authorizationMiddleware(), (req, res) => {
-    res.render('home')
+    res.render('home', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
 
-app.get('/users', authorizationMiddleware('admin'), async (req, res) => {
+app.get('/users', async (req, res) => {
+    if(!req.userIsAdmin) {
+        return res.redirect('404')
+    }
     const users = await User.find().sort({ createdAt: -1 });
     
-    res.render('users', { users })
+    res.render('users', { users, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
+
 app.delete('/users/:id', async (req, res) => {
     let user = await User.findByIdAndDelete(req.params.id)
     if (!user) {
@@ -75,11 +63,12 @@ app.delete('/users/:id', async (req, res) => {
 })
 
 // Get addProduct route
-app.get('/products/upload', authorizationMiddleware('admin'), (req, res) => {
-    res.render('add-product')
+app.get('/products/upload', (req, res) => {
+    if(!req.userIsAdmin) {
+        return res.redirect('404')
+    }
+    res.render('add-product', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
-
-
 
 app.get('/log-out', (req, res) => {
     res.clearCookie('token')
@@ -87,7 +76,11 @@ app.get('/log-out', (req, res) => {
 })
 
 app.get('/404', (req, res) => {
-    res.render('404')
+    res.render('404', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 }) 
+app.use((req, res, next) => {
+    res.status(404).redirect('/404');
+})
+
 
 

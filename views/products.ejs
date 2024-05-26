@@ -88,18 +88,19 @@ strong {
         <ng-container >
           <div class="card" style="width: 18rem;" >
             <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
-            <img src="<%= item.data %>" class="card-img-top" alt="Product Image">
+            <a href="/products/api/<%= item._id %>"><img src="<%= item.data %>" class="card-img-top" alt="Product Image"></a>
             <% } else { %>
-              <img src="images/Pause to play.jpg" class="card-img-top" alt="Product Image">
+              <a href="/products/api/<%= item._id %>"><img src="images/Pause to play.jpg" class="card-img-top" alt="Product Image"></a>
               <% } %>
             <div class="card-body">
-              <h5 class="card-title">title: <%= item.metadata.title %></h5>
-              <h5 class="card-title">description: <%= item.metadata.description %></h5>
-              <p class="price">Price: <%= item.metadata.price %></p>
+              <h5 class="card-title">Title: <%= item.metadata.title %></h5>
+              <h5 class="card-title">Description: <%= item.metadata.description %></h5>
             </div>
+            <% if(userIsAdmin) { %>
             <div class="buttons">
                 <button type="button" class="btn btn-dark delete-btn" data-id="<%= item._id %>">DELETE</button>
             </div>
+            <% } %>
           </div>
         </ng-container>
     </li>
@@ -121,6 +122,7 @@ strong {
       response.json()
     })
     .then(response => {
+      window.location.reload()
     })
     .catch(err => console.log(err))
     })
