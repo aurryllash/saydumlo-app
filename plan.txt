@@ -1,1 +1,0 @@
-first of all I should make whole registation with mongoDB. I should have roles for users and for admin.

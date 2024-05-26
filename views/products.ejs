@@ -90,7 +90,7 @@ strong {
             <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
             <a href="/products/api/<%= item._id %>"><img src="<%= item.data %>" class="card-img-top" alt="Product Image"></a>
             <% } else { %>
-              <a href="/products/api/<%= item._id %>"><img src="images/Pause to play.jpg" class="card-img-top" alt="Product Image"></a>
+              <a href="/products/api/<%= item._id %>"><img src="/images/video-thumbnail-default.png" class="card-img-top" alt="Product Image"></a>
               <% } %>
             <div class="card-body">
               <h5 class="card-title">Title: <%= item.metadata.title %></h5>
