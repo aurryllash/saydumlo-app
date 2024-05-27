@@ -4,28 +4,27 @@ const router = express.Router()
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const { GridFSBucket, ObjectId } = require('mongodb');
+
 const MongoClient = require('mongodb').MongoClient
-
 const url = process.env.DATABASE_URL
-
 const mongoClient = new MongoClient(url) 
 
 
 const storage = new GridFsStorage({
   url,
   file: (req, file) => {
-
-    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === 'video/mpeg') {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
       return {
         bucketName: "photos",
         filename: `${Date.now()}_${file.originalname}`,
         metadata: {
           title: req.body.title,
-          description: req.body.description
+          description: req.body.description,
+          price: req.body.price
         }
       }
     } else {
-      return `${Date.now()}_${file.originalname}`
+        throw new Error(`${Date.now()}_${file.originalname} is not an image`);
     }
   },
 })
@@ -34,15 +33,7 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 router.post('/upload', upload.single('image'), async (req, res) => {
-  const file = req.file
-
-  res.send({
-    message: "Uploaded",
-    id: file.id,
-    name: file.filename,
-    contentType: file.contentType
-  })
-
+  res.redirect('/products')
 })
 
 
@@ -50,7 +41,8 @@ router.get("/", async (req, res) => {
   try {
     await mongoClient.connect();
 
-    const database = mongoClient.db("saydumlo")
+    // const database = mongoClient.db("saydumlo")
+    const database = mongoClient.db("store8")
     
     const images = database.collection("photos.files").find(); 
     const files = await images.toArray()
@@ -96,7 +88,8 @@ router.get('/api/:id', async (req, res) => {
 
   try {
     await mongoClient.connect();
-    const database = mongoClient.db('saydumlo')
+    // const database = mongoClient.db('saydumlo')
+    const database = mongoClient.db('store8')
 
     const objectId = new ObjectId(req.params.id)
      
@@ -129,7 +122,8 @@ router.delete('/:id', async (req, res) => {
   try {
     await mongoClient.connect();
 
-    const database = mongoClient.db("saydumlo")
+    // const database = mongoClient.db("saydumlo")
+    const database = mongoClient.db("store8")
 
     const objectId = new ObjectId(req.params.id)
 
@@ -147,6 +141,13 @@ router.delete('/:id', async (req, res) => {
       err,
     })
   }
+})
+
+router.get('/upload', (req, res) => {
+  if(!req.userIsAdmin) {
+      return res.redirect('404')
+  }
+  res.render('add-product', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })
 
 

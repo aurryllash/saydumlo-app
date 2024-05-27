@@ -23,7 +23,7 @@ router.post('/registration', async (req, res) => {
                 password: password
             })
             await newUser.save();
-            return res.render('log-in', { message: 'Registration successful. Please log in.' });
+            return res.redirect('log-in');
         } catch(error) {
             return res.status(400).json({ message: error.message })
         }

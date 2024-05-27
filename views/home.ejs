@@ -1,27 +1,68 @@
 <%- include('./partials/header')%>
-    <style>
-        .containerr {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            
-        }
-        h1 {
-            text-align: center;
-        }
-        p {
-            text-align: center;
-            font-size: 1.2em;
-            color: #555;
-        }
-    </style>
+<style>
+    .containers {
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    grid-gap: 20px;
+    justify-content: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.carousel-item img {
+    object-fit: cover;
+    width: 100%;
+    height: 500px;
+}
+li {
+  list-style-type: none;
+}
+</style>
 
-<div class="containerr">
-    <h1>Welcome to Your Website</h1>
-    <p>This is the home page of your website</p>
-</div>
+<section>
+    <div id="carouselExampleIndicators" class="carousel slide">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img style="object-fit: cover; object-position: center top;" src="https://media.gq-magazine.co.uk/photos/6205476668071f7ecff06fbd/16:9/w_1920,c_limit/100222_Balenciaga_hp.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://sneakernews.com/wp-content/uploads/2023/10/mm6-maison-margiela-salomon-cross-mid-4.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="https://assets.vogue.com/photos/589135d923f9887c0e0df97a/master/w_1920,c_limit/01-vetements.jpg" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
 
-</body>
-</html>
+<section>
+    <div class="product">
+        <div class="container text-center" style="margin-bottom: 200px; margin-top: 200px;">
+            <% fileData.forEach(item => { %>
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="<%= item.data %>" style="width: 80%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+              
+            </div>
+            <% }) %>
+        </div>
+    </div>
+  </section>
+
+<%- include('./partials/footer')%>
+
+

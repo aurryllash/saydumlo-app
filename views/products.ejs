@@ -1,32 +1,21 @@
 <%- include('./partials/header')%>
 <style>
-    .product {
-    margin-top: 50px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+  .containers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    grid-gap: 20px;
+    justify-content: center;
 }
-.containers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-left: 40px;
+@media screen and (max-width: 600px) {
+    .containers {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+li {
+  list-style-type: none;
 }
-.addIcon {
-  opacity: 25%;
-  cursor: pointer;
-}
-.addIcon:hover {
-  opacity: 40%;
-}
-strong {
-  font-size: 16px;
-  margin-left: 20px;
-}
+
 .card {
-    margin: 10px;
-    margin-left: 20px;
     height: 400px;
     padding: 20px 10px;
     border: none;
@@ -34,67 +23,56 @@ strong {
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.428);
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
-  }
-  
-  img {
-    width: 30%;
-    height: auto; 
+    overflow: hidden;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
     transition: ease-in 0.2s;
     border: 1px solid white;
     border-radius: 5px;
-  }
-  .card-body {
-    display: grid;
-    align-items: center;
-  }
-  .card-title {
-    font-size: 16px;
-  }
-  .price {
-    font-size: 16px;
-    font-weight: 600;
-  }
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .warning {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10vh;
-    font-weight: 600;
-    font-size: 20px;
-  }
-  .inactive-item {
-    border: 2px solid red;
-    background-color: rgba(229, 51, 51, 0.285)
-  }
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  
-</style>
-<div class="product">
+}
 
-    <ul>
+.card-body{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.card-title {
+    font-size: 20px;
+    margin: 5px 0;
+}
+.price {
+    font-size: 20px;
+    margin: 5px 0;
+    color: rgb(0, 0, 0);
+}
+
+.buttons {
+    margin-top: auto;
+}
+ 
+</style>
+
+<section style="min-height: 100vh;">
+  <div class="product" style="margin-top: 100px; margin-bottom: 100px; ">
+    <ul class="containers">
         <% Data.forEach(item => { %>
       <li>
-        <ng-container >
           <div class="card" style="width: 18rem;" >
-            <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
-            <a href="/products/api/<%= item._id %>"><img src="<%= item.data %>" class="card-img-top" alt="Product Image"></a>
-            <% } else { %>
-              <a href="/products/api/<%= item._id %>"><img src="/images/video-thumbnail-default.png" class="card-img-top" alt="Product Image"></a>
-              <% } %>
+            <div class="img_container" style="height: 80%;">
+              <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
+                <a href="/products/api/<%= item._id %>"><img src="<%= item.data %>" class="card-img-top" alt="Product Image"></a>
+                <% } else { %>
+                  <a href="/products/api/<%= item._id %>"><img src="/images/video-thumbnail-default.png" class="card-img-top" alt="Product Image"></a>
+                  <% } %>
+            </div>
             <div class="card-body">
               <h5 class="card-title">Title: <%= item.metadata.title %></h5>
               <h5 class="card-title">Description: <%= item.metadata.description %></h5>
+              <h5 class="price">Price: <%= item.metadata.price %></h5>
             </div>
             <% if(userIsAdmin) { %>
             <div class="buttons">
@@ -102,11 +80,12 @@ strong {
             </div>
             <% } %>
           </div>
-        </ng-container>
-    </li>
-    <% }) %>
-  </ul>
-</div>
+      </li>
+      <% }) %>
+    </ul>
+  </div>
+</section>
+
 </body>
 <script>
 
@@ -129,4 +108,4 @@ strong {
   })
   
 </script>
-</html>
+<%- include('./partials/footer')%>

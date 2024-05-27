@@ -13,6 +13,7 @@
 
 <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container">
+      <a class="navbar-brand fs-4" routerLink="/main"><img src=" /images/black + chrome_silver aesthetic ★.jpg" style="opacity: 80%;" width="40px" alt=""></a>
       <button class="navbar-toggler shadow-none" style="background: #000000;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
         <span class="navbar-toggler-icon nav-icon"></span>
       </button>
@@ -20,6 +21,7 @@
       <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <!-- offcanvas header -->
         <div class="offcanvas-header text-white border-bottom shadow-none border-0">
+          <img src="/images/black + chrome_silver aesthetic ★.jpg" routerLink="/main" width="40px" alt="">
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <!-- sidebar body -->
@@ -30,14 +32,7 @@
               <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
             </li>
             <% } %>
-            <% if(!userIsLoggedIn) { %>
-            <li class="nav-item mx-2">
-              <a class="nav-link active text-white" aria-current="page" href="/api/log-in">log In</a>
-            </li>
-            <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709);" href="/api/registration">Registration</a>
-            </li>
-            <% } %>
+    
             <% if(userIsAdmin) { %>
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/users">users</a>
@@ -47,8 +42,15 @@
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products/upload">Add Product</a>
             </li>
             <% } %>
+            
             <li class="nav-item mx-2">
               <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products">Products</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/about">About Us</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/terms">Terms & Conditions</a>
             </li>
             <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
@@ -56,6 +58,17 @@
             </li>
             <% } %>
           </ul>
+          <% if(!userIsLoggedIn) { %>
+          <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 fs-6">
+            <a class="text-white text-decoration-none px-3 py-1" href="/api/log-in">Login</a>
+            <a class="text-white text-decoration-none px-3 py-1 bg-success rounded-4" href="/api/registration">Registration</a>
+          </div>
+          <% } %>
+          <% if(userIsLoggedIn) { %>
+          <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 fs-6">
+            <a class="text-white text-decoration-none px-3 py-1" href="/log-out">Log Out</a>
+          </div>
+          <% } %>
         </div>
       </div>
     </div>
