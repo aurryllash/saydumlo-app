@@ -38,6 +38,10 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 
 
 router.get("/", async (req, res) => {
+  if(!req.userIsLoggedIn) {
+    return res.status(403).redirect('/404')
+  }
+  
   try {
     await mongoClient.connect();
 

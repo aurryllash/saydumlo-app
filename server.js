@@ -40,7 +40,7 @@ app.use('/api', registrationRoutes)
 app.use('/api', loginRoutes)
 app.use('/products', addProductRoutes)
 app.use('/users', usersRoutes)
-app.use('/', homeRoutes)
+app.use('/home', homeRoutes)
 
 app.get('/log-out', (req, res) => {
     res.clearCookie('token')

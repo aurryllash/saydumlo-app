@@ -21,8 +21,8 @@ li {
     border: none;
     position: relative;
     cursor: pointer;
-    background-color: rgba(128, 128, 128, 0.428);
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+    /* background-color: rgba(128, 128, 128, 0.428); */
+    /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342); */
     overflow: hidden;
 }
 
@@ -30,7 +30,6 @@ li {
     width: 100%;
     height: auto;
     transition: ease-in 0.2s;
-    border: 1px solid white;
     border-radius: 5px;
 }
 
@@ -42,12 +41,13 @@ li {
 
 .card-title {
     font-size: 20px;
+    font-weight: 700;
     margin: 5px 0;
 }
 .price {
-    font-size: 20px;
+    font-size: 17px;
     margin: 5px 0;
-    color: rgb(0, 0, 0);
+    color: rgb(95, 95, 95);
 }
 
 .buttons {
@@ -56,13 +56,17 @@ li {
  
 </style>
 
-<section style="min-height: 100vh;">
+<section style="min-height: 100vh" class="container">
   <div class="product" style="margin-top: 100px; margin-bottom: 100px; ">
+    <div class="products-title" style="padding: 0 30px;">
+      <h3 style="font-weight: 800;">Products</h3>
+    </div>
+
     <ul class="containers">
         <% Data.forEach(item => { %>
       <li>
-          <div class="card" style="width: 18rem;" >
-            <div class="img_container" style="height: 80%;">
+          <div class="card" style="width: 18rem; height: 500px;" >
+            <div class="img_container" style="height: 60%;">
               <% if( item.contentType === 'image/jpeg' || item.contentType === 'image/png') { %>
                 <a href="/products/api/<%= item._id %>"><img src="<%= item.data %>" class="card-img-top" alt="Product Image"></a>
                 <% } else { %>
@@ -70,9 +74,9 @@ li {
                   <% } %>
             </div>
             <div class="card-body">
-              <h5 class="card-title">Title: <%= item.metadata.title %></h5>
-              <h5 class="card-title">Description: <%= item.metadata.description %></h5>
-              <h5 class="price">Price: <%= item.metadata.price %></h5>
+              <h5 class="card-title"><%= item.metadata.title %></h5>
+              <h5 class="price"><%= item.metadata.description %></h5>
+              <h5 class="price"><%= item.metadata.price %>₾</h5>
             </div>
             <% if(userIsAdmin) { %>
             <div class="buttons">

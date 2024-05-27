@@ -9,9 +9,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
 </head>
+<style>
+  body {
+    background-color: white;
+  }
+  nav .nav-link {
+        color: black; /* Change link color to black */
+      }
+  nav .nav-link {
+    font-weight: 600;
+  }
+  nav a {
+    font-weight: 600;
+  }
+</style>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-dark">
+<nav class="navbar navbar-expand-lg bg-light">
     <div class="container">
       <a class="navbar-brand fs-4" routerLink="/main"><img src=" /images/black + chrome_silver aesthetic ★.jpg" style="opacity: 80%;" width="40px" alt=""></a>
       <button class="navbar-toggler shadow-none" style="background: #000000;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -20,53 +34,47 @@
       <!-- side-bar -->
       <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <!-- offcanvas header -->
-        <div class="offcanvas-header text-white border-bottom shadow-none border-0">
+        <div class="offcanvas-header border-bottom shadow-none border-0">
           <img src="/images/black + chrome_silver aesthetic ★.jpg" routerLink="/main" width="40px" alt="">
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <!-- sidebar body -->
         <div class="offcanvas-body d-flex flex-column flex-lg-row p-4 p-lg-0">
           <ul class="navbar-nav justify-content-start align-items-center fs-6 flex-grow-1 pe-3">
-            <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
-              <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+              <a class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
-            <% } %>
     
             <% if(userIsAdmin) { %>
             <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/users">users</a>
+              <a class="nav-link"  cursor: pointer;" href="/users">users</a>
             </li>
             
             <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products/upload">Add Product</a>
+              <a class="nav-link" cursor: pointer;" href="/products/upload">Add Product</a>
             </li>
             <% } %>
-            
-            <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/products">Products</a>
-            </li>
-            <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/about">About Us</a>
-            </li>
-            <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/terms">Terms & Conditions</a>
-            </li>
             <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
-              <a class="nav-link" style="color: rgba(255, 255, 255, 0.709); cursor: pointer;" href="/log-out">Log Out</a>
+              <a class="nav-link" cursor: pointer;" href="/products">Products</a>
             </li>
             <% } %>
+            <li class="nav-item mx-2">
+              <a class="nav-link" cursor: pointer;" href="/about">About Us</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="nav-link" cursor: pointer;" href="/terms">Terms & Conditions</a>
+            </li>
           </ul>
           <% if(!userIsLoggedIn) { %>
           <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 fs-6">
-            <a class="text-white text-decoration-none px-3 py-1" href="/api/log-in">Login</a>
-            <a class="text-white text-decoration-none px-3 py-1 bg-success rounded-4" href="/api/registration">Registration</a>
+            <a class=" text-decoration-none px-3 py-1" style="color: black;" href="/api/log-in">Login</a>
+            <a class=" text-decoration-none px-3 py-1 bg-success rounded-4" href="/api/registration">Registration</a>
           </div>
           <% } %>
           <% if(userIsLoggedIn) { %>
           <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 fs-6">
-            <a class="text-white text-decoration-none px-3 py-1" href="/log-out">Log Out</a>
+            <a class="text-decoration-none px-3 py-1" style="color: black;"  href="/log-out">Log Out</a>
           </div>
           <% } %>
         </div>

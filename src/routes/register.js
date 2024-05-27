@@ -32,7 +32,7 @@ router.post('/registration', async (req, res) => {
 
 router.get('/registration', (req, res) => {
     if(req.userIsLoggedIn) {
-        res.status(403).redirect('/404')
+        return res.status(403).redirect('/404')
     }
     res.render('registration', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })

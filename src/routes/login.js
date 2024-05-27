@@ -30,7 +30,7 @@ router.post('/log-in', async (req, res) => {
                 sameSite: "strict",
                 maxAge: jwtExpireSeconds * 6000
             })
-            res.redirect('/')
+            res.redirect('/home')
         } catch(err) {
             return res.status(400).json({ message: err.message })
         }
@@ -39,7 +39,7 @@ router.post('/log-in', async (req, res) => {
 
 router.get('/log-in', (req, res) => {
     if(req.userIsLoggedIn) {
-        res.status(403).redirect('/404')
+        return res.status(403).redirect('/404')
     }
     res.render('log-in', { userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
 })

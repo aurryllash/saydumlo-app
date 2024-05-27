@@ -17,6 +17,14 @@
 li {
   list-style-type: none;
 }
+.see-product {
+  font-size: 23px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.see-product:hover {
+  text-decoration: underline;
+}
 </style>
 
 <section>
@@ -48,17 +56,60 @@ li {
     </div>
   </section>
 
-<section>
+
+  <section>
     <div class="product">
         <div class="container text-center" style="margin-bottom: 200px; margin-top: 200px;">
-            <% fileData.forEach(item => { %>
+           
             <div class="row align-items-start" style="margin-top: 20px; ">
               <div class="col">
-                <img src="<%= item.data %>" style="width: 80%; height: auto;" class="card-img-top" alt="Product Image">
+                <img src="/images for main/Carhartt WIP Showcases Summer Denim Styles in _Boroughs_ Editorial.jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
               </div>
-              
             </div>
-            <% }) %>
+
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <% if(userIsLoggedIn) { %>
+              <div class="col align-items-start">
+                <a href="/products" style="color: black;"><p class="see-product">See Product</p></a>
+              </div>
+              <% } else {%>
+                <div class="col align-items-start">
+                  <a href="/log-in"  style="color: black;"><p class="see-product">See Product</p></a>
+                </div>
+                <% } %>
+              <div class="col align-items-start">
+              </div>
+            </div>
+
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="/images for main/@taira__kakeru on twitter.jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+            </div>
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="/images for main/download.jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+            </div>
+
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="/images for main/i-D.jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+            </div>
+
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="/images for main/download (1).jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+            </div>
+
+            <div class="row align-items-start" style="margin-top: 20px; ">
+              <div class="col">
+                <img src="/images for main/Aimé Leon Dore _ Suicoke FW18.jpg" style="width: 60%; height: auto;" class="card-img-top" alt="Product Image">
+              </div>
+            </div>
+            
         </div>
     </div>
   </section>
