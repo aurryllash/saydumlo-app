@@ -25,6 +25,13 @@ li {
 .see-product:hover {
   text-decoration: underline;
 }
+.text-for-see-product {
+  font-size: 20px; 
+  color: rgb(36, 36, 36); 
+}
+.text-for-see-product:hover {
+  text-decoration: underline;
+}
 </style>
 
 <section>
@@ -67,19 +74,23 @@ li {
               </div>
             </div>
 
-            <div class="row align-items-start" style="margin-top: 20px; ">
-              <% if(userIsLoggedIn) { %>
-              <div class="col align-items-start">
-                <a href="/products" style="color: black;"><p class="see-product">See Product</p></a>
-              </div>
-              <% } else {%>
-                <div class="col align-items-start">
-                  <a href="/log-in"  style="color: black;"><p class="see-product">See Product</p></a>
+            <div class="container text-center" style="display: flex; justify-content: center; align-items: center;">
+              <div class="row text-center align-items-center" style="margin-top: 20px; width: 60%;">
+                <% if(userIsLoggedIn) { %>
+                <div class="col-ms-12 col-md-6">
+                    <a href="/products" style="color: black;"><p class="see-product">See Product</p></a>
                 </div>
-                <% } %>
-              <div class="col align-items-start">
+                <% } else {%>
+                  <div class="col-ms-12 col-md-6">
+                      <a href="/api/log-in"  style="color: black;"><p class="see-product">See Product</p></a>
+                  </div>
+                  <% } %>
+                  <div class="col-ms-12 col-md-6">
+                    <p class="text-for-see-product">"Find unique pieces you won’t see anywhere else."</p>
+                </div>
               </div>
             </div>
+           
 
             <div class="row align-items-start" style="margin-top: 20px; ">
               <div class="col">

@@ -42,6 +42,10 @@ app.use('/products', addProductRoutes)
 app.use('/users', usersRoutes)
 app.use('/home', homeRoutes)
 
+app.get('/', (req, res) => {
+    res.redirect('/home')
+})
+
 app.get('/log-out', (req, res) => {
     res.clearCookie('token')
     res.redirect('/api/log-in')
