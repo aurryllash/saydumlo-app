@@ -48,8 +48,19 @@ router.get("/", async (req, res) => {
     // const database = mongoClient.db("saydumlo")
     const database = mongoClient.db("store8")
     
-    const images = database.collection("photos.files").find(); 
-    const files = await images.toArray()
+    // const images = database.collection("photos.files").find();
+     
+    // const files = await images.sort({ "metadata.price": -1 }).toArray()
+    const files = await database.collection("photos.files").aggregate([
+      {
+        $addFields: { 
+          convertedPrice: { $toInt:  "$metadata.price" } 
+        }
+      },
+      {
+        $sort: { convertedPrice: -1 }
+      }
+    ]).toArray()
 
     if(files.length === 0) {
       return res.status(403).json({ error: "Images Not Found" })
@@ -71,7 +82,8 @@ router.get("/", async (req, res) => {
         filename: file.filename,
         data: `data:image/jpeg;base64,${fileData.join('')}`,
         metadata: file.metadata,
-        contentType: file.contentType
+        contentType: file.contentType,
+        uploadDate: file.uploadDate
       };
     });
 
@@ -80,8 +92,8 @@ router.get("/", async (req, res) => {
 
 
   } catch(error) {
-    console.log(error)
-    res.status(500).send({
+    
+    return res.status(500).send({
       message: "Error Something went wrong",
       error,
     })
@@ -92,32 +104,34 @@ router.get('/api/:id', async (req, res) => {
 
   try {
     await mongoClient.connect();
-    // const database = mongoClient.db('saydumlo')
+
     const database = mongoClient.db('store8')
 
     const objectId = new ObjectId(req.params.id)
      
+    const file = await database.collection('photos.files').findOne({ _id: objectId })
+    
+    const chunks = await database.collection('photos.chunks').find({ files_id: file._id }).toArray()
+    let collectChunks = []
 
-    var bucket = new GridFSBucket(database, {
-      bucketName: 'photos'
+    chunks.forEach(chunk => {
+      collectChunks.push(chunk.data.toString('base64'));
     })
 
-    var downStream = bucket.openDownloadStream(objectId)
+    const fileData = { 
+      id: file._id,
+      data: `data:image/jpeg;base64,${collectChunks.join('')}`,
+      metadata: file.metadata
+     }
 
-    downStream.on('error', (err) => {
-      console.error('Error downloading file', err);
-      if (!res.headersSent) {
-        res.status(404).json({ message: 'File Not Found' });
-      }
-    });
+    //  res.render('specificProduct', { fileData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
+    res.send(fileData)
 
-    downStream.on('finish', () => {
-      console.log('File download completed');
-    });
-
-    downStream.pipe(res)
   } catch(error) {
-    return res.send(404).json({ message: 'Something Went Wrong' })
+    return res.status(500).send({
+      message: "Error Something went wrong",
+      error,
+    })
   }
 
 })
