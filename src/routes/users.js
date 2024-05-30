@@ -19,4 +19,26 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json({ message: "User deleted successfully" })
 })
 
+router.put('/role/:id', async (req, res) => {
+    try {
+        console.log(req.params.id)
+    let user = await User.findById(req.params.id)
+
+    if(!user){
+        return res.status(404).json({ message: 'User Is Not Found' })
+    }
+
+    const userRole = user.role === 'admin' ? 'user' : 'admin';
+
+    user.role = userRole
+    user.save()
+
+
+    res.status(200).json({ message: 'User Role Is Updated Successfully' })
+    } catch(error) {
+
+    }
+    
+})
+
 module.exports = router
