@@ -37,7 +37,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 })
 
 
-router.get("/", async (req, res) => {
+router.get("/:page", async (req, res) => {
   if(!req.userIsLoggedIn) {
     return res.status(403).redirect('/404')
   }
@@ -51,6 +51,8 @@ router.get("/", async (req, res) => {
     // const images = database.collection("photos.files").find();
      
     // const files = await images.sort({ "metadata.price": -1 }).toArray()
+    const page = +req.params.page
+
     const files = await database.collection("photos.files").aggregate([
       {
         $addFields: { 
@@ -60,7 +62,7 @@ router.get("/", async (req, res) => {
       {
         $sort: { convertedPrice: -1 }
       }
-    ]).toArray()
+    ]).skip((page-1)*4).limit(4).toArray()
 
     if(files.length === 0) {
       return res.status(403).json({ error: "Images Not Found" })
@@ -124,8 +126,8 @@ router.get('/api/:id', async (req, res) => {
       metadata: file.metadata
      }
 
-    //  res.render('specificProduct', { fileData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
-    res.send(fileData)
+     res.render('specificProduct', { fileData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
+    // res.send(fileData)
 
   } catch(error) {
     return res.status(500).send({

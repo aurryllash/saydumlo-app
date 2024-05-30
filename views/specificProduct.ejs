@@ -1,3 +1,22 @@
 <%- include('./partials/header')%>
 
+<section class="container" style="min-height: 100vh; margin-top: 100px;">
+
+    <div class="container">
+        <div class="row align-items-start">
+          <div class="col">
+            <img src="<%= fileData.data %>" alt="">
+          </div>
+          <div class="col">
+            <div class="file_body">
+                <p class="file_title" style="font-size: 50px; font-weight: 800;"><%= fileData.metadata.title %></p>
+                <p style="font-size: 40px; font-weight: 700; opacity: 80%;"><%= fileData.metadata.description %></p>
+                <p style="font-size: 40px; font-weight: 700; opacity: 80%;"><%= fileData.metadata.price %>₾</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</section>
+
 <%- include('./partials/footer')%>
