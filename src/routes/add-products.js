@@ -4,6 +4,7 @@ const router = express.Router()
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const { GridFSBucket, ObjectId } = require('mongodb');
+const { object } = require('joi');
 
 const MongoClient = require('mongodb').MongoClient
 const url = process.env.DATABASE_URL
@@ -37,7 +38,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
 })
 
 
-router.get("/:page", async (req, res) => {
+router.get("/", async (req, res) => {
   if(!req.userIsLoggedIn) {
     return res.status(403).redirect('/404')
   }
@@ -51,7 +52,15 @@ router.get("/:page", async (req, res) => {
     // const images = database.collection("photos.files").find();
      
     // const files = await images.sort({ "metadata.price": -1 }).toArray()
-    const page = +req.params.page
+
+    const limit = 4;
+    if(req.query.page) {
+      var page = +req.query.page
+    } else {
+      var page = 1
+    }
+    const currentPage = page
+    
 
     const files = await database.collection("photos.files").aggregate([
       {
@@ -63,10 +72,13 @@ router.get("/:page", async (req, res) => {
         $sort: { convertedPrice: -1 }
       }
     ]).skip((page-1)*4).limit(4).toArray()
+    
 
     if(files.length === 0) {
       return res.status(403).json({ error: "Images Not Found" })
     }
+
+    
 
     const imagePromises = files.map(async (file) => {
       let fileData = [];
@@ -90,7 +102,11 @@ router.get("/:page", async (req, res) => {
     });
 
     const imagesData = await Promise.all(imagePromises);
-    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
+
+    const totaldocs = await database.collection("photos.files").countDocuments();
+    const totalPages = Math.ceil(totaldocs / limit);
+
+    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage })
 
 
   } catch(error) {
