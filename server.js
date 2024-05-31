@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const setUserStatus = require('./src/middleware/setUserStatus')
 var cookieParser = require('cookie-parser')
+const compression = require('compression')
 
 const registrationRoutes = require('./src/routes/register');
 const loginRoutes = require('./src/routes/login');
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.use(setUserStatus)
+app.use(compression())
 
 // Routes
 app.use('/api', registrationRoutes)

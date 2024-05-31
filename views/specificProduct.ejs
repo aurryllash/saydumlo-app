@@ -1,17 +1,45 @@
 <%- include('./partials/header')%>
+<style>
+  .file_title {
+    font-size: 3rem;
+    font-weight: 800;
+  }
+  .file_data {
+    font-size: 2.5rem; 
+    font-weight: 700; 
+    opacity: 80%;
+  }
+@media (max-width: 768px) {
+  .file_title {
+    font-size: 2.5rem;
+  }
+  .file_data {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .file_title {
+    font-size: 2rem;
+  }
+  .file_data {
+    font-size: 1.5rem;
+  }
+}
+</style>
 
 <section class="container" style="min-height: 100vh; margin-top: 100px;">
 
     <div class="container">
-        <div class="row align-items-start">
-          <div class="col">
-            <img src="<%= fileData.data %>" alt="">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12 text-center">
+            <img style="max-width: 100%; height: auto;" src="<%= fileData.data %>" alt="">
           </div>
-          <div class="col">
+          <div class="col-lg-6 col-md-12 text-center text-lg-start">
             <div class="file_body">
-                <p class="file_title" style="font-size: 50px; font-weight: 800;"><%= fileData.metadata.title %></p>
-                <p style="font-size: 40px; font-weight: 700; opacity: 80%;"><%= fileData.metadata.description %></p>
-                <p style="font-size: 40px; font-weight: 700; opacity: 80%;"><%= fileData.metadata.price %>₾</p>
+                <p class="file_title"><%= fileData.metadata.title %></p>
+                <p class="file_data"><%= fileData.metadata.description %></p>
+                <p class="file_data"><%= fileData.metadata.price %>₾</p>
             </div>
           </div>
         </div>
