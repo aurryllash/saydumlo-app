@@ -31,11 +31,17 @@ const storage = new GridFsStorage({
 })
 
 
-const upload = multer({ storage });
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
-router.post('/upload', upload.single('image'), async (req, res) => {
-  res.redirect('/products')
-})
+router.post('/upload', (req, res, next) => {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      console.error('File upload error:', err);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.redirect('/products');
+  });
+});
 
 
 router.get("/", async (req, res) => {
