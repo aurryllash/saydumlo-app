@@ -65,8 +65,26 @@ nav .page-link:hover {
 
 <section style="min-height: 100vh" class="container">
   <div class="product" style="margin-top: 100px; margin-bottom: 100px; ">
-    <div class="products-title" style="padding: 0 30px;">
-      <h3 style="font-weight: 800;">Products</h3>
+    
+    <div class="container text-center">
+      <div class="row">
+        <div class="col text-start">
+          <div class="products-title" style="padding: 0 30px;">
+            <h3 style="font-weight: 800;">Products</h3>
+          </div>
+        </div>
+        <div class="col">
+          <div class="products-title"  style="padding: 0 30px;">
+            <select class="form-select"  aria-label="Default select example" id="selectSort">
+              <option value="default">Sort by</option>
+              <option value="/products?sort=az" <%= currentSort == 'az' ? 'selected' : '' %> >A-Z</option>
+              <option value="/products?sort=za" <%= currentSort == 'za' ? 'selected' : '' %> >Z-A</option>
+              <option value="/products?sort=lh" <%= currentSort == 'lh' ? 'selected' : '' %> >Price: Low To High</option>
+              <option value="/products?sort=hl" <%= currentSort == 'hl' ? 'selected' : '' %> >Price: High To Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
     <ul class="containers">
@@ -99,13 +117,13 @@ nav .page-link:hover {
 <section class="container">
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-      <li class="page-item"><a class="page-link" href="/products?page=<%= currentPage === 1 ? 1 : currentPage-1 %>">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="/products?page=<%= currentPage === 1 ? 1 : currentPage-1 %><%=  currentSort != 'default' ? '&sort=' + currentSort : ''  %>">Previous</a></li>
       <% for(let i=0; i<totalPages; i++) { %>
 
-      <li class="page-item"><a class="page-link" href="/products?page=<%= i+1 %>" ><%= i+1 %></a></li>
+      <li class="page-item"><a class="page-link" href="/products?page=<%= i+1 %><%= currentSort != 'default' ? '&sort=' + currentSort : '' %>" ><%= i+1 %></a></li>
 
       <% } %>
-      <li class="page-item"><a class="page-link"  href="/products?page=<%= currentPage === totalPages ? totalPages : currentPage+1 %>">Next</a></li>
+      <li class="page-item"><a class="page-link"  href="/products?page=<%= currentPage === totalPages ? totalPages : currentPage+1 %><%=  currentSort != 'default' ? '&sort=' + currentSort : ''  %>">Next</a></li>
     </ul>
   </nav>
 </section>
@@ -129,6 +147,14 @@ nav .page-link:hover {
     })
     .catch(err => console.log(err))
     })
+  })
+
+  document.getElementById('selectSort').addEventListener('change', () => {
+    
+    var selectSort = event.target.value;
+    if(selectSort != 'default') {
+      window.location.href = selectSort
+    }
   })
   
 </script>

@@ -53,13 +53,31 @@ router.get("/", async (req, res) => {
      
     // const files = await images.sort({ "metadata.price": -1 }).toArray()
 
-    const limit = 4;
+    const limit = 8;
     if(req.query.page) {
       var page = +req.query.page
     } else {
       var page = 1
     }
+
+    if(req.query.sort) {
+      var sort = req.query.sort || 'default'
+    }
+    const currentSort = sort
     const currentPage = page
+
+    let sortStage = {};
+    if (currentSort === 'lh') {
+      sortStage = { convertedPrice: 1 };
+    } else if (currentSort === 'hl') {
+      sortStage = { convertedPrice: -1 };
+    } else if (currentSort === 'az') {
+      sortStage = { 'metadata.title': 1 };
+    } else if (currentSort === 'za') {
+      sortStage = { 'metadata.title': -1 };
+    } else {
+      sortStage = { 'metadata.description': 1 };
+    }
     
 
     const files = await database.collection("photos.files").aggregate([
@@ -69,9 +87,9 @@ router.get("/", async (req, res) => {
         }
       },
       {
-        $sort: { convertedPrice: -1 }
+        $sort: sortStage
       }
-    ]).skip((page-1)*4).limit(4).toArray()
+    ]).skip((page-1)*limit).limit(limit).toArray()
     
 
     if(files.length === 0) {
@@ -106,7 +124,7 @@ router.get("/", async (req, res) => {
     const totaldocs = await database.collection("photos.files").countDocuments();
     const totalPages = Math.ceil(totaldocs / limit);
 
-    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage })
+    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage, currentSort })
 
 
   } catch(error) {
