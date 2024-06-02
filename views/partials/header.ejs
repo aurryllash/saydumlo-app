@@ -22,6 +22,20 @@
   nav a {
     font-weight: 600;
   }
+  .header-search-input {
+    background-color: transparent;
+    outline: none;
+    color: white;
+    border: none;
+    border-bottom: 2px solid rgba(245, 245, 245, 0.5);
+    padding: 4px;
+    transition: padding 0.1s;
+
+}
+.header-search-input:focus{
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgb(245, 245, 245);
+}
 </style>
 <body>
 
@@ -47,23 +61,26 @@
     
             <% if(userIsAdmin) { %>
             <li class="nav-item mx-2">
-              <a class="nav-link"  cursor: pointer;" href="/users">users</a>
+              <a class="nav-link" href="/users">users</a>
             </li>
             
             <li class="nav-item mx-2">
-              <a class="nav-link" cursor: pointer;" href="/products/upload">Add Product</a>
+              <a class="nav-link" href="/products/upload">Add Product</a>
             </li>
             <% } %>
             <% if(userIsLoggedIn) { %>
             <li class="nav-item mx-2">
-              <a class="nav-link" cursor: pointer;" href="/products">Products</a>
+              <a class="nav-link" href="/products">Products</a>
+            </li>
+            <li class="nav-item mx-6">
+              <input type="text" style="color: black;" class="header-search-input" id="searchedInput" placeholder="search...">
             </li>
             <% } %>
             <li class="nav-item mx-2">
-              <a class="nav-link" cursor: pointer;" href="/about">About Us</a>
+              <a class="nav-link" href="/about">About Us</a>
             </li>
             <li class="nav-item mx-2">
-              <a class="nav-link" cursor: pointer;" href="/terms">Terms & Conditions</a>
+              <a class="nav-link" href="/terms">Terms & Conditions</a>
             </li>
           </ul>
           <% if(!userIsLoggedIn) { %>
@@ -81,3 +98,15 @@
       </div>
     </div>
   </nav>
+
+  <script>
+    const searchedInput = document.getElementById('searchedInput');
+
+    searchedInput.addEventListener('keypress', () => {
+      
+      if(event.key === 'Enter') {
+        const searchedUrl = '/products?search=' +  searchedInput.value;
+        window.location.href = searchedUrl
+      }
+    })
+  </script>

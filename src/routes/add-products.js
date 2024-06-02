@@ -78,9 +78,21 @@ router.get("/", async (req, res) => {
     } else {
       sortStage = { 'metadata.description': 1 };
     }
-    
+
+    let seacrhStage = {}
+    if(req.query.search) {
+      var search = req.query.search
+      seacrhStage = {
+        "metadata.title": {
+            $regex: search,
+            $options: 'i'
+      }} 
+    }
 
     const files = await database.collection("photos.files").aggregate([
+      {
+        $match: seacrhStage
+      },
       {
         $addFields: { 
           convertedPrice: { $toInt:  "$metadata.price" } 
@@ -124,7 +136,7 @@ router.get("/", async (req, res) => {
     const totaldocs = await database.collection("photos.files").countDocuments();
     const totalPages = Math.ceil(totaldocs / limit);
 
-    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage, currentSort })
+    res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage, currentSort, search })
 
 
   } catch(error) {

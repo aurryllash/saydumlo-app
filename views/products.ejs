@@ -60,6 +60,11 @@ nav .page-link {
 nav .page-link:hover {
   color: black;
 }
+.form-select:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: inherit;
+  }
  
 </style>
 
@@ -77,10 +82,10 @@ nav .page-link:hover {
           <div class="products-title"  style="padding: 0 30px;">
             <select class="form-select"  aria-label="Default select example" id="selectSort">
               <option value="default">Sort by</option>
-              <option value="/products?sort=az" <%= currentSort == 'az' ? 'selected' : '' %> >A-Z</option>
-              <option value="/products?sort=za" <%= currentSort == 'za' ? 'selected' : '' %> >Z-A</option>
-              <option value="/products?sort=lh" <%= currentSort == 'lh' ? 'selected' : '' %> >Price: Low To High</option>
-              <option value="/products?sort=hl" <%= currentSort == 'hl' ? 'selected' : '' %> >Price: High To Low</option>
+              <option value="/products?sort=az<%= search ? '&search=' + search : '' %>" <%= currentSort == 'az' ? 'selected' : '' %> >A-Z</option>
+              <option value="/products?sort=za<%= search ? '&search=' + search : '' %>" <%= currentSort == 'za' ? 'selected' : '' %> >Z-A</option>
+              <option value="/products?sort=lh<%= search ? '&search=' + search : '' %>" <%= currentSort == 'lh' ? 'selected' : '' %> >Price: Low To High</option>
+              <option value="/products?sort=hl<%= search ? '&search=' + search : '' %>" <%= currentSort == 'hl' ? 'selected' : '' %> >Price: High To Low</option>
             </select>
           </div>
         </div>
@@ -120,7 +125,7 @@ nav .page-link:hover {
       <li class="page-item"><a class="page-link" href="/products?page=<%= currentPage === 1 ? 1 : currentPage-1 %><%=  currentSort != 'default' ? '&sort=' + currentSort : ''  %>">Previous</a></li>
       <% for(let i=0; i<totalPages; i++) { %>
 
-      <li class="page-item"><a class="page-link" href="/products?page=<%= i+1 %><%= currentSort != 'default' ? '&sort=' + currentSort : '' %>" ><%= i+1 %></a></li>
+      <li class="page-item"><a class="page-link" href="/products?page=<%= i+1 %><%= currentSort != 'default' ? '&sort=' + currentSort : '' %><%= search ? '&search=' + search : '' %>" ><%= i+1 %></a></li>
 
       <% } %>
       <li class="page-item"><a class="page-link"  href="/products?page=<%= currentPage === totalPages ? totalPages : currentPage+1 %><%=  currentSort != 'default' ? '&sort=' + currentSort : ''  %>">Next</a></li>
