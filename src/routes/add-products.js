@@ -95,13 +95,26 @@ router.get("/", async (req, res) => {
       }} 
     }
 
+    const countAggregatePipeline = [
+      {
+        $match: seacrhStage
+      },
+      {
+        $count: "totalProducts"
+      }
+    ];
+    
+    const countResult = await database.collection("photos.files").aggregate(countAggregatePipeline).toArray();
+    const totalProducts = countResult.length > 0 ? countResult[0].totalProducts : 0;
+    const totalPages = Math.ceil(totalProducts / limit);
+
     const files = await database.collection("photos.files").aggregate([
       {
         $match: seacrhStage
       },
       {
         $addFields: { 
-          convertedPrice: { $toDouble:  "$metadata.price" } 
+          convertedPrice: { $toInt:  "$metadata.price" } 
         }
       },
       {
@@ -139,8 +152,7 @@ router.get("/", async (req, res) => {
 
     const imagesData = await Promise.all(imagePromises);
 
-    const totaldocs = await database.collection("photos.files").countDocuments();
-    const totalPages = Math.ceil(totaldocs / limit);
+    
 
     res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage, currentSort, search })
 
@@ -215,7 +227,7 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-router.get('/upload', (req, res) => {
+router.get('/file/upload', (req, res) => {
   if(!req.userIsAdmin) {
       return res.redirect('404')
   }
