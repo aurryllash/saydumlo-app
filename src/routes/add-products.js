@@ -95,7 +95,7 @@ router.get("/", async (req, res) => {
       },
       {
         $addFields: { 
-          convertedPrice: { $toInt:  "$metadata.price" } 
+          convertedPrice: { $toDouble:  "$metadata.price" } 
         }
       },
       {
