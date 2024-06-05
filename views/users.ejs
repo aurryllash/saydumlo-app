@@ -44,11 +44,8 @@
             <td><%= user.role %></td>
             <% if(user.email != 'lashatsiklauri@gmail.com') { %>
             <td><div class="change-role-button" style="background-color: rgb(56, 56, 56); max-width: 150px;"><button class="change-role-button" data-id="<%= user._id %>">Give <%= user.role === 'admin' ? 'user' : 'admin' %></button></div></td>
-            <% } else { %>
-              <td><div class="change-role-button" style="background-color: rgb(56, 56, 56); max-width: 150px;"><button class="change-role-button">Main Admin</button></div></td>
-              <% } %>
             <td><button class="delete-button" data-id="<%= user._id %>">Delete</button></td>
-            
+            <% } %>
           </tr>
           <% }) %>
         </tbody>

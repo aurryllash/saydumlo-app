@@ -6,12 +6,6 @@ const setUserStatus = require('./src/middleware/setUserStatus')
 var cookieParser = require('cookie-parser')
 const compression = require('compression')
 
-const registrationRoutes = require('./src/routes/register');
-const loginRoutes = require('./src/routes/login');
-const usersRoutes = require('./src/routes/users')
-const homeRoutes = require('./src/routes/home')
-const addProductRoutes = require('./src/routes/add-products'); 
-
 const DATABASE_URL = process.env.DATABASE_URL
 
 console.time('Initial Setup and MongoDB Connection');
@@ -36,9 +30,23 @@ app.use(setUserStatus)
 app.use(compression())
 
 // Routes
-app.use('/api', registrationRoutes)
-app.use('/api', loginRoutes)
-// app.use('/products', addProductRoutes)
+app.use('/api', async (req, res, next) => {
+    try {
+        const registrationRoutes = (await import('./src/routes/register.js')).default;
+        registrationRoutes(req, res, next)
+    } catch(err) {
+        next(err);
+    }
+})
+// app.use('/api', loginRoutes)
+app.use('/api', async (req, res, next) => {
+    try {
+        const loginRoutes = (await import('./src/routes/login.js')).default;
+        loginRoutes(req, res, next)
+    } catch(err) {
+        next(err);
+    }
+})
 app.use('/products', async (req, res, next) => {
 
     try {
@@ -49,10 +57,17 @@ app.use('/products', async (req, res, next) => {
     }
 
 });
-app.use('/users', usersRoutes)
+// app.use('/users', usersRoutes)
+app.use('/users', async (req, res, next) => {
+    try {
+        const usersRoutes = (await import('./src/routes/users.js')).default;
+        usersRoutes(req, res, next)
+    } catch(err) {
+        next(err)
+    }
+})
 // app.use('/home', homeRoutes)
 app.use('/home', async (req, res, next) => {
-
     try {
         const homeRoutes = (await import('./src/routes/home.js')).default;
         homeRoutes(req, res, next);

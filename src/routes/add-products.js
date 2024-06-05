@@ -4,7 +4,6 @@ const router = express.Router()
 const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const { GridFSBucket, ObjectId } = require('mongodb');
-const { object } = require('joi');
 
 const MongoClient = require('mongodb').MongoClient
 const url = process.env.DATABASE_URL
@@ -36,8 +35,11 @@ const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 router.post('/upload', (req, res, next) => {
   upload.single('image')(req, res, (err) => {
     if (err) {
-      console.error('File upload error:', err);
-      return res.status(500).send('Internal Server Error');
+        if(err.code === "FILE_SIZE_LIMITE") {
+          return res.status(500).send('File size exceeds the limit (5MB)')
+        }
+        console.error('Multer error:', err);
+        return res.status(500).send('Internal Server Error');
     }
     res.redirect('/products');
   });
@@ -52,12 +54,8 @@ router.get("/", async (req, res) => {
   try {
     await mongoClient.connect();
 
-    // const database = mongoClient.db("saydumlo")
     const database = mongoClient.db("store8")
     
-    // const images = database.collection("photos.files").find();
-     
-    // const files = await images.sort({ "metadata.price": -1 }).toArray()
 
     const limit = 8;
     if(req.query.page) {
@@ -191,7 +189,6 @@ router.get('/api/:id', async (req, res) => {
      }
 
      res.render('specificProduct', { fileData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin })
-    // res.send(fileData)
 
   } catch(error) {
     return res.status(500).send({
@@ -206,7 +203,6 @@ router.delete('/:id', async (req, res) => {
   try {
     await mongoClient.connect();
 
-    // const database = mongoClient.db("saydumlo")
     const database = mongoClient.db("store8")
 
     const objectId = new ObjectId(req.params.id)
