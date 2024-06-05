@@ -35,10 +35,15 @@ const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 router.post('/upload', (req, res, next) => {
   upload.single('image')(req, res, (err) => {
     if (err) {
-        if(err.code === "FILE_SIZE_LIMITE") {
+        if(err.code === "LIMIT_FILE_SIZE") {
           return res.status(500).send('File size exceeds the limit (5MB)')
         }
-        console.error('Multer error:', err);
+        
+        if (err instanceof multer.MulterError) {
+          console.error('Multer error:', err.message);
+          return res.status(500).send('Internal Server Error');
+        }
+        console.error('Other error during file upload:', err);
         return res.status(500).send('Internal Server Error');
     }
     res.redirect('/products');
