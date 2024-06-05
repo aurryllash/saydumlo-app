@@ -141,7 +141,7 @@ nav .page-link:hover {
     button.addEventListener('click', () => {
       const id = button.dataset.id
       console.log(button.dataset.id)
-      fetch(`/products/${id}`, {
+      fetch(`/products/file/${id}`, {
       method: "DELETE"
     })
     .then(response => {

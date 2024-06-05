@@ -38,7 +38,7 @@ router.post('/upload', (req, res, next) => {
         if(err.code === "LIMIT_FILE_SIZE") {
           return res.status(500).send('File size exceeds the limit (5MB)')
         }
-        
+
         if (err instanceof multer.MulterError) {
           console.error('Multer error:', err.message);
           return res.status(500).send('Internal Server Error');
@@ -204,7 +204,7 @@ router.get('/api/:id', async (req, res) => {
 
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/file/:id', async (req, res) => {
   try {
     await mongoClient.connect();
 
