@@ -82,7 +82,7 @@ router.get("/", async (req, res) => {
     } else if (currentSort === 'za') {
       sortStage = { 'metadata.title': -1 };
     } else {
-      sortStage = { 'metadata.description': 1 };
+      sortStage = { 'metadata.description': -1 };
     }
 
     let seacrhStage = {}
@@ -153,8 +153,8 @@ router.get("/", async (req, res) => {
     const imagesData = await Promise.all(imagePromises);
 
     
-
     res.render('products', { Data: imagesData, userIsLoggedIn: req.userIsLoggedIn, userIsAdmin: req.userIsAdmin, totalPages, currentPage, currentSort, search })
+
 
 
   } catch(error) {

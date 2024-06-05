@@ -21,7 +21,7 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/role/:id', async (req, res) => {
     try {
-        console.log(req.params.id)
+
     let user = await User.findById(req.params.id)
 
     if(!user){
